@@ -1,19 +1,24 @@
 /**
+ * Author： CC11001100
+ * 
  * 简单倒计时
  * 
  *  1. 支持页面内同时存在多个计时器并且不互相干扰
  *  2. 支持多种格式，比如可以省略天、小时...等等，前面省略会自动加到后面，最多可以只有秒
- *  3. 倒计时可以是秒数，可以是时间戳，如果是时间戳需要指明timestamp="true"
+ *  3. 倒计时可以是秒数，可以是时间戳，可以是日期时间（设置一种即可）
  *
  * Usage:
  * 
- * 		<div class="timer-simple-seconds" timer="3600" timestamp="false">
- *			<span class="day">day</span>天
- * 			<span class="hour">hour</span>时
- * 			<span class="minute">minute</span>分
- * 			<span class="second">second</span>秒
+ * 		<div class="timer-simple-seconds" timer="3600" timestamp="1482737420000" datetime="2016-12-26 15:30:20">
+ *			<span class="day">0</span>天
+ * 			<span class="hour">00</span>时
+ * 			<span class="minute">00</span>分
+ * 			<span class="second">00</span>秒
  *		</div>
  *
+ */
+/**
+ * 按结构查找，依赖结构和class
  */
 $(function(){
 	
@@ -21,11 +26,17 @@ $(function(){
 	var timers=$(".timer-simple-seconds");
 	for(var i=0;i<timers.length;i++){
 		var timer=$(timers[i]);
-		//如果是时间戳，则预处理一下时间为倒计时秒数
-		if(timer.attr("timestamp")=="true") prepareProcessTimer(timer);
+		
+		if(timer.attr("timestamp")){
+			//如果是时间戳，则预处理一下时间为倒计时秒数
+			prepareProcessTimestamp2Timer(timer);
+		}else if(timer.attr("datetime")){
+			//处理时间格式为倒计时秒数
+			prepareProcessDatetime2Timer(timer);
+		}
 		//先调用一次，避免误差
 		processTimer(timer);
-		setInterval(processTimer,1,timer);
+		setInterval(processTimer,1000,timer);
 	}
 	
 	/**
@@ -33,13 +44,21 @@ $(function(){
 	 * 
 	 * 对时间做一个预处理，因为如果服务器直接返回剩余的描述的话从服务器相应到客户端虽然短到几百毫秒但总是会有偏差的，这样子不太好
 	 * 所以服务器只需要设置一个时间戳表示到哪里停止就可以了
-	 * @param {Object} timer
 	 */
-	function prepareProcessTimer(timer){
-		var total=parseInt(timer.attr("timer"));
+	function prepareProcessTimestamp2Timer(timer){
+		var total=parseInt(timer.attr("timestamp"));
 		total=Math.round(total/1000);
 		var now=new Date().getTime()/1000;
 		timer.attr("timer",total-now);
+	}
+	
+	/**
+	 * 将日期时间格式转为倒计时格式
+	 */
+	function prepareProcessDatetime2Timer(timer){
+		var timestamp=new Date(timer.attr("datetime")).getTime();
+		timer.attr("timestamp",timestamp);
+		prepareProcessTimestamp2Timer(timer);
 	}
 	
 	/**
