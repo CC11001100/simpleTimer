@@ -14,5 +14,5 @@
 因为在HTTP中多个空白符会合为一个空格，所以建议多个span写为一行来避免空格问题。
 	
 
-#### 预览：  
+#### 预览（耐心稍微一等加载外部的CDN jQuery）：  
 [http://htmlpreview.github.io/?https://github.com/BenDanChen/simpleTimer/blob/master/index.html](http://htmlpreview.github.io/?https://github.com/BenDanChen/simpleTimer/blob/master/index.html)
