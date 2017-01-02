@@ -9,7 +9,7 @@
 
 #### Usage:
 ` 
-<div class="timer-simple-seconds" (timer="3600" | timestamp="1482737420000" | datetime="2016-12-26 15:30:20") >  
+&lt;div class="timer-simple-seconds" (timer="3600" | timestamp="1482737420000" | datetime="2016-12-26 15:30:20") &gt;  
   <span class="day">0</span>天
   <span class="hour">00</span>时
   <span class="minute">00</span>分
